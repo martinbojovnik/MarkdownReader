@@ -1,7 +1,7 @@
 echo Enter install path
 read path
 
-cd path
+cd $path
 git clone https://github.com/martinbojovnik/MarkdownReader.git
 cd MarkdownReader
 
