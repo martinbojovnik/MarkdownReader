@@ -1,11 +1,14 @@
 #!/usr/bin/env python
 
-import markdown
-import sys
+import markdown, sys, os
 from PySide6.QtWidgets import (
     QApplication, QMainWindow, QWidget, QPushButton, QFileDialog, QVBoxLayout
 )
 from PySide6.QtWebEngineWidgets import QWebEngineView
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+CSS = os.path.join(BASE_DIR, 'scr', 'style.css')
+JS = os.path.join(BASE_DIR, 'scr', 'script.js')
 
 def GetHTML(htmlFile):
     with open(htmlFile, "r") as f:
@@ -16,8 +19,11 @@ def GetHTML(htmlFile):
         extensions=["fenced_code", "codehilite"]
     )
 
-    with open("style.css", "r") as f:
-        html_content = "<style>" + f.read() + "</style>" + html_content
+    with open(CSS, "r") as f:
+        html_content = f"<style>{f.read()}</style>" + html_content
+
+    with open(JS, "r") as f:
+        html_content = html_content + f"<script>{f.read}</script>"
 
     return html_content
 
@@ -35,12 +41,12 @@ class InitialView(QWidget):
     def open_file(self):
         path, _ = QFileDialog.getOpenFileName(self, "Select a file")
         if path:
-            print("Selected file:", path)
             self.on_file_selected(path)
 
 class HTMLView(QWebEngineView):
     def __init__(self, path):
         super().__init__()
+        print(path)
         self.setHtml(GetHTML(path))
 
 class MainWindow(QMainWindow):
@@ -50,15 +56,20 @@ class MainWindow(QMainWindow):
         self.resize(800, 900)
 
         if  arg != None and arg != "":
-            self.html_view = HTMLView(arg)
-            self.setCentralWidget(self.html_view)
+            self.show_html_view(arg)
         else:
-            self.initial_view = InitialView(self.show_html_view)
-            self.setCentralWidget(self.initial_view)
+            self.display_open_view()
 
     def show_html_view(self, file_path):
-        self.html_view = HTMLView(file_path)
-        self.setCentralWidget(self.html_view)
+        try:
+            self.html_view = HTMLView(file_path)
+            self.setCentralWidget(self.html_view)
+        except :
+            self.display_open_view()
+
+    def display_open_view(self):
+        self.initial_view = InitialView(self.show_html_view)
+        self.setCentralWidget(self.initial_view)
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
