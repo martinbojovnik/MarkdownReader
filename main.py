@@ -23,7 +23,7 @@ def GetHTML(htmlFile):
         html_content = f"<style>{f.read()}</style>" + html_content
 
     with open(JS, "r") as f:
-        html_content = html_content + f"<script>{f.read}</script>"
+        html_content = html_content + f"<script>{f.read()}</script>"
 
     return html_content
 
@@ -46,7 +46,6 @@ class InitialView(QWidget):
 class HTMLView(QWebEngineView):
     def __init__(self, path):
         super().__init__()
-        print(path)
         self.setHtml(GetHTML(path))
 
 class MainWindow(QMainWindow):

@@ -131,3 +131,29 @@ body {
   scrollbar-width: thin;
   scrollbar-color: #888 #1e1e1e;
 }
+
+
+/*COPY BUTTON*/
+.copy-button {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  padding: 4px 10px;
+  font-size: 12px;
+  background-color: #2d2d2d;
+  color: #ffffff;
+  border: 1px solid #444;
+  border-radius: 4px;
+  cursor: pointer;
+  font-family: sans-serif;
+  opacity: 0.8;
+  transition: opacity 0.2s ease;
+}
+.copy-button:hover {
+  opacity: 1;
+  background-color: #3a3a3a;
+}
+.copy-button.copied {
+  background-color: #4caf50;
+  border-color: #4caf50;
+}
